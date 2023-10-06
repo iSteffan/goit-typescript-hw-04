@@ -1,51 +1,69 @@
-// import React, {useReducer} from "react";
+// Ваше завдання – додати типи для наступних елементів коду:
 
-// const initialState: State = {
-//   isRequestInProgress: false,
-//   requestStep: 'idle',
-// };
+// RequestStep: Це рядковий літерал.
 
-// function requestReducer(state: State, action: Action): State {
-//   switch (action.type) {
-//     case 'START_REQUEST':
-//       return { ...state, isRequestInProgress: true, requestStep: 'start' };
-//     case 'PENDING_REQUEST':
-//       return { ...state, isRequestInProgress: true, requestStep: 'pending' };
-//     case 'FINISH_REQUEST':
-//       return { ...state, isRequestInProgress: false, requestStep: 'finished' };
-//     case 'RESET_REQUEST':
-//       return { ...state, isRequestInProgress: false, requestStep: 'idle' };
-//     default:
-//       return state;
-//   }
-// }
+// State: Цей тип являє собою об'єкт з двома властивостями isRequestInProgress і RequestStep
 
-// export function RequestComponent() {
-//   const [requestState, requestDispatch] = useReducer(requestReducer, initialState);
+// Action: Це тип, що представляє можливі дії, які можуть бути відправлені до редюсера.
 
-//   const startRequest = () => {
-//     requestDispatch({ type: 'START_REQUEST' });
-//     // Імітуємо запит до сервера
-//     setTimeout(() => {
-//       requestDispatch({ type: 'PENDING_REQUEST' });
-//       // Імітуємо отримання відповіді від сервера
-//       setTimeout(() => {
-//         requestDispatch({ type: 'FINISH_REQUEST' });
-//       }, 2000);
-//     }, 2000);
-//   };
+// Дивіться код і опишіть для нього правильні типи.
 
-//   const resetRequest = () => {
-//     requestDispatch({ type: 'RESET_REQUEST' });
-//   };
+import React, { useReducer } from 'react';
 
-//   return (
-//     <div>
-//       <button onClick={startRequest}>Почати запит</button>
-//       <button onClick={resetRequest}>Скинути запит</button>
-//       <p>Стан запиту: {requestState.requestStep}</p>
-//     </div>
-//   );
-// }
+type State = { isRequestInProgress: boolean; requestStep: string };
 
-// export default RequestComponent;
+type Action =
+  | { type: 'START_REQUEST' }
+  | { type: 'PENDING_REQUEST' }
+  | { type: 'FINISH_REQUEST' }
+  | { type: 'RESET_REQUEST' };
+
+const initialState: State = {
+  isRequestInProgress: false,
+  requestStep: 'idle',
+};
+
+function requestReducer(state: State, action: Action): State {
+  switch (action.type) {
+    case 'START_REQUEST':
+      return { ...state, isRequestInProgress: true, requestStep: 'start' };
+    case 'PENDING_REQUEST':
+      return { ...state, isRequestInProgress: true, requestStep: 'pending' };
+    case 'FINISH_REQUEST':
+      return { ...state, isRequestInProgress: false, requestStep: 'finished' };
+    case 'RESET_REQUEST':
+      return { ...state, isRequestInProgress: false, requestStep: 'idle' };
+    default:
+      return state;
+  }
+}
+
+export function RequestComponent() {
+  const [requestState, requestDispatch] = useReducer(requestReducer, initialState);
+
+  const startRequest = () => {
+    requestDispatch({ type: 'START_REQUEST' });
+    // Імітуємо запит до сервера
+    setTimeout(() => {
+      requestDispatch({ type: 'PENDING_REQUEST' });
+      // Імітуємо отримання відповіді від сервера
+      setTimeout(() => {
+        requestDispatch({ type: 'FINISH_REQUEST' });
+      }, 2000);
+    }, 2000);
+  };
+
+  const resetRequest = () => {
+    requestDispatch({ type: 'RESET_REQUEST' });
+  };
+
+  return (
+    <div>
+      <button onClick={startRequest}>Почати запит</button>
+      <button onClick={resetRequest}>Скинути запит</button>
+      <p>Стан запиту: {requestState.requestStep}</p>
+    </div>
+  );
+}
+
+export default RequestComponent;
